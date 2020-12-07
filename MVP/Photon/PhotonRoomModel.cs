@@ -1,29 +1,33 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using System.Linq;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections.Generic;
 using UniRx;
+using UnityEngine;
 
 namespace Holo5GunGame.Model
 {
-    public class PhotonRoomModel : MonoBehaviourPunCallbacks
+    public class PhotonRoomModel
     {
         public PhotonRoomModel()
         {
-            RoomMembers = new ReactiveCollection<int>() { 0, 0, 0, 0, 0 };
+            RoomMembers = new ReactiveCollection<int>(Enumerable.Repeat(0, 5).ToList());
         }
 
         public ReactiveCollection<int> RoomMembers { get; private set; }
 
-        public override void OnRoomListUpdate(List<RoomInfo> roomList)
+        public void UpDateRoomList(List<RoomInfo> roomList)
         {
-            for(int i = 0;i < roomList.Count; i++)
+
+            foreach(var room in roomList)
             {
-                RoomMembers[i] = roomList[i].PlayerCount;
+                var number = int.Parse(room.Name.Replace("Room", ""));
+
+                Debug.Log(string.Format("Number : {0}", number));
+
+                RoomMembers[number] = room.PlayerCount;
             }
         }
-
 
     }
 }

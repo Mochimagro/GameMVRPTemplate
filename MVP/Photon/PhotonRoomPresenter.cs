@@ -5,6 +5,8 @@ using Holo5GunGame.Model;
 using Holo5GunGame.View;
 using UniRx;
 using Doozy.Engine;
+using System.Collections.Generic;
+using UniRx.Triggers;
 
 namespace Holo5GunGame.Presenter
 {
@@ -41,6 +43,7 @@ namespace Holo5GunGame.Presenter
 
             _photonRoomModel.RoomMembers.ObserveReplace().Subscribe(value =>
            {
+               Debug.Log(string.Format("Index:{0} Value:{1}", value.Index, value.NewValue));
                _photonRoomView.ChangeRoomPlayerCount(value.Index, value.NewValue);
            });
 
@@ -49,6 +52,11 @@ namespace Holo5GunGame.Presenter
         public override void OnConnectedToMaster()
         {
             PhotonNetwork.JoinLobby();
+        }
+
+        public override void OnRoomListUpdate(List<RoomInfo> roomList)
+        {
+            _photonRoomModel.UpDateRoomList(roomList);
         }
 
         public override void OnJoinedRoom()
