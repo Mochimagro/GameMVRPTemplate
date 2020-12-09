@@ -9,8 +9,6 @@ namespace Holo5GunGame.Presenter
 {
     public class MainGamePresenter : MonoBehaviour
     {
-        [SerializeField] Data.MainGameData __mainGameData = null;
-
         private Model.MainGameModel _mainGameModel = null;
         [SerializeField] private List<Transform> _startPosition = new List<Transform>();
 
@@ -20,13 +18,22 @@ namespace Holo5GunGame.Presenter
 
         void Start()
         {
-            Init();
-            Bind();
+            Ready();
+        }
+
+        public void Ready()
+        {
+            _mainGameModel = new Model.MainGameModel();
+
+            _mainGameModel.OnReady.Subscribe(model =>
+            {
+                Init();
+                Bind();
+            });
         }
 
         public MainGamePresenter Init()
         {
-            _mainGameModel = new Model.MainGameModel(new Entity.MainGameEntity(__mainGameData));
 
             for (int i = 0; i < _mainGameModel.CharacterEntitys.Count; i++)
             {
