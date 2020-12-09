@@ -8,7 +8,6 @@ namespace Holo5GunGame.Model
     // [CreateAssetMenu(menuName ="Model/MainGameModel")]
     public class MainGameModel : ModelBese
     {
-        // データを非同期用にする。(各EntityをReactivePropatyに)
         public MainGameModel() : base()
         {
             LoadDataAsset(MAIN_GAME_DATA);

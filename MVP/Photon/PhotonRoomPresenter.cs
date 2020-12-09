@@ -16,13 +16,13 @@ namespace Holo5GunGame.Presenter
         [SerializeField]private PhotonRoomView _photonRoomView = null;
 
 
-        private void Start()
+        public void Ready()
         {
             Init();
             Bind();
         }
 
-        public PhotonRoomPresenter Init()
+        private PhotonRoomPresenter Init()
         {
             _photonRoomModel = new PhotonRoomModel();
 
@@ -31,7 +31,7 @@ namespace Holo5GunGame.Presenter
             return this;
         }
 
-        public void Bind()
+        private void Bind()
         {
 
             // リストを選択
@@ -45,7 +45,6 @@ namespace Holo5GunGame.Presenter
             // リストが更新されたら
             _photonRoomModel.RoomMembers.ObserveReplace().Subscribe(value =>
            {
-               Debug.Log(string.Format("Index:{0} Value:{1}", value.Index, value.NewValue));
                _photonRoomView.ChangeRoomPlayerCount(value.Index, value.NewValue);
            });
 

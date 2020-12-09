@@ -16,11 +16,6 @@ namespace Holo5GunGame.Presenter
 
         [SerializeField]private List<PlayerStatusPresenter> _minePlayerStatusPresenter = null;
 
-        void Start()
-        {
-            Ready();
-        }
-
         public void Ready()
         {
             _mainGameModel = new Model.MainGameModel();
