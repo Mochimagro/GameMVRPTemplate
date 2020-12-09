@@ -20,7 +20,6 @@ namespace Holo5GunGame.Presenter
         {
             Init();
             Bind();
-            PhotonNetwork.ConnectUsingSettings();
         }
 
         public PhotonRoomPresenter Init()
@@ -34,18 +33,27 @@ namespace Holo5GunGame.Presenter
 
         public void Bind()
         {
-            _photonRoomView.OnClickButton.Subscribe(value =>
+
+            // リストを選択
+            _photonRoomView.OnClickRoomButton.Subscribe(value =>
             {
                 PhotonNetwork.JoinOrCreateRoom(value, new RoomOptions() { MaxPlayers = 4 }, TypedLobby.Default);
                 GameEventMessage.SendEvent("SelectedRoom");
             
             });
 
+            // リストが更新されたら
             _photonRoomModel.RoomMembers.ObserveReplace().Subscribe(value =>
            {
                Debug.Log(string.Format("Index:{0} Value:{1}", value.Index, value.NewValue));
                _photonRoomView.ChangeRoomPlayerCount(value.Index, value.NewValue);
            });
+
+            // 通信開始ボタン
+            _photonRoomView.OnClickConnectButton.Subscribe(_ =>
+            {
+                PhotonNetwork.ConnectUsingSettings();
+            });
 
         }
 
@@ -56,6 +64,7 @@ namespace Holo5GunGame.Presenter
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
+            GameEventMessage.SendEvent("JoinedLoby");
             _photonRoomModel.UpDateRoomList(roomList);
         }
 
