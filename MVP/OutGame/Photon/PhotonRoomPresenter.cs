@@ -11,8 +11,6 @@ namespace Holo5GunGame.Presenter
 {
     public class PhotonRoomPresenter : MonoBehaviourPunCallbacks,IPresenter
     {
-        // TODO: しっかりとLobyに入室したときにボタンを表示する
-        // TODO: 部屋から出るときも(退出したとき用に)ボタンを再表示する
 
         private PhotonRoomModel _photonRoomModel = null;
         [SerializeField]private PhotonRoomView _photonRoomView = null;
