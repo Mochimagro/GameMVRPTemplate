@@ -6,36 +6,40 @@ using Holo5GunGame.View;
 using UniRx;
 using Doozy.Engine;
 using System.Collections.Generic;
-using UniRx.Triggers;
 
 namespace Holo5GunGame.Presenter
 {
-    public class PhotonRoomPresenter : MonoBehaviourPunCallbacks
+    public class PhotonRoomPresenter : MonoBehaviourPunCallbacks,IPresenter
     {
+        // TODO: しっかりとLobyに入室したときにボタンを表示する
+        // TODO: 部屋から出るときも(退出したとき用に)ボタンを再表示する
+
         private PhotonRoomModel _photonRoomModel = null;
         [SerializeField]private PhotonRoomView _photonRoomView = null;
 
-
-        public void Ready()
+        public void Awake()
         {
+            PhotonNetwork.ConnectUsingSettings();
+
             Init();
-            Bind();
         }
 
-        private PhotonRoomPresenter Init()
+        public void  Init()
         {
-            _photonRoomModel = new PhotonRoomModel();
 
+            _photonRoomModel = new PhotonRoomModel();
             _photonRoomView.Init();
 
-            return this;
+            Bind();
+
+            return;
         }
 
-        private void Bind()
+        public void Bind()
         {
 
             // リストを選択
-            _photonRoomView.OnClickRoomButton.Subscribe(value =>
+            _photonRoomView.OnClickRoomButton.TakeUntilDisable(this).Subscribe(value =>
             {
                 PhotonNetwork.JoinOrCreateRoom(value, new RoomOptions() { MaxPlayers = 4 }, TypedLobby.Default);
                 GameEventMessage.SendEvent("SelectedRoom");
@@ -43,13 +47,13 @@ namespace Holo5GunGame.Presenter
             });
 
             // リストが更新されたら
-            _photonRoomModel.RoomMembers.ObserveReplace().Subscribe(value =>
+            _photonRoomModel.RoomMembers.ObserveReplace().TakeUntilDisable(this).Subscribe(value =>
            {
                _photonRoomView.ChangeRoomPlayerCount(value.Index, value.NewValue);
            });
 
             // 通信開始ボタン
-            _photonRoomView.OnClickConnectButton.Subscribe(_ =>
+            _photonRoomView.OnClickConnectButton.TakeUntilDisable(this).Subscribe(_ =>
             {
                 PhotonNetwork.ConnectUsingSettings();
             });
@@ -69,7 +73,18 @@ namespace Holo5GunGame.Presenter
 
         public override void OnJoinedRoom()
         {
-            GameEventMessage.SendEvent("RoomJoined");
+            GameEventMessage.SendEvent("JoinedRoom");
+        }
+
+
+        public void LeaveRoom()
+        {
+            PhotonNetwork.LeaveRoom();
+        }
+
+        public override void OnLeftRoom()
+        {
+            GameEventMessage.SendEvent("RoomLeaved");
         }
 
     }

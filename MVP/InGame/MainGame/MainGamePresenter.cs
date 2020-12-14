@@ -7,6 +7,8 @@ using System;
 
 namespace Holo5GunGame.Presenter
 {
+    
+
     public class MainGamePresenter : MonoBehaviour
     {
         private Model.MainGameModel _mainGameModel = null;

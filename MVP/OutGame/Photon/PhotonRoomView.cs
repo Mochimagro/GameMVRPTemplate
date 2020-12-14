@@ -9,7 +9,7 @@ namespace Holo5GunGame.View
     public class PhotonRoomView : MonoBehaviour
     {
         [SerializeField] private Button _connectButton = null;
-        [SerializeField] private List<RoomButtonBehavior> _roomButtons = new List<RoomButtonBehavior>();
+        [SerializeField] private List<Behavior.RoomButtonBehavior> _roomButtons = new List<Behavior.RoomButtonBehavior>();
         public Subject<string> _subject = new Subject<string>();
         public IObservable<string> OnClickRoomButton => _subject;
         public IObservable<Unit> OnClickConnectButton => _connectButton.OnClickAsObservable();

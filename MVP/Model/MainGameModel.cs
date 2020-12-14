@@ -10,7 +10,7 @@ namespace Holo5GunGame.Model
     {
         public MainGameModel() : base()
         {
-            LoadDataAsset(MAIN_GAME_DATA);
+            LoadDataAsset<Data.MainGameData>(MAIN_GAME_DATA);
 
             OnCompleteLoadData.Subscribe(value =>
             {

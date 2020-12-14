@@ -8,10 +8,12 @@ namespace Holo5GunGame.Entity
     {
         public CharacterEntity(Data.CharacterData data)
         {
+            CharacterName = data.CharacterName;
             PlayerControllerPresenter = data.PlayerControllerPresenter;
             BulletEntity = new BulletEntity(data.NormalBullet);
         }
         
+        public string CharacterName { get; private set; }
         public Presenter.PlayerControllerPresenter PlayerControllerPresenter { get; private set; }
         public BulletEntity BulletEntity { get; private set; }
 
